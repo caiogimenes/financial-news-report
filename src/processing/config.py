@@ -1,6 +1,8 @@
+SUBSCRIBE_TOPIC = "raw_data"
+
 config = {
     'kafka': {
-        'KAFKA_BOOTSTRAP_SERVERS': 'pkc-p11xm.us-east-1.aws.confluent.cloud:9092',
+        'bootstrap.servers': 'pkc-p11xm.us-east-1.aws.confluent.cloud:9092',
         'security.protocol': 'SASL_SSL',
         'sasl.mechanisms': 'PLAIN',
         'sasl.username': 'F37GT4XKKXJBHEB2',

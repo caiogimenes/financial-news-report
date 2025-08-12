@@ -1,17 +1,17 @@
-from config import config
+import config
 from confluent_kafka import Consumer
 
 class KafkaConsumer:
     def __init__(self):
         self.consumer = Consumer({
-            'bootstrap.servers': config['kafka']['KAFKA_BOOTSTRAP_SERVERS'],
-            'security.protocol': config['kafka']['security.protocol'],
-            'sasl.mechanisms': config['kafka']['sasl.mechanisms'],
-            'sasl.username': config['kafka']['sasl.username'],
-            'sasl.password': config['kafka']['sasl.password'],
-            'client.id': config['kafka']['client.id'],
-            'group.id': 'python-group-1',
-            'auto.offset.reset': 'earliest'
+            'bootstrap.servers': config.config['kafka']['bootstrap.servers'],
+            'security.protocol': config.config['kafka']['security.protocol'],
+            'sasl.mechanisms': config.config['kafka']['sasl.mechanisms'],
+            'sasl.username': config.config['kafka']['sasl.username'],
+            'sasl.password': config.config['kafka']['sasl.password'],
+            'client.id': config.config['kafka']['client.id'],
+            'group.id': config.config["kafka"]['python-group-1'],
+            'auto.offset.reset': config.config["kafka"]['earliest'],
         })
         self.topic = None
 
