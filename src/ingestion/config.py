@@ -1,3 +1,4 @@
+TOPIC = "raw_data"
 config = {
     "FINNHUB_API_KEY": "d2bkv1pr01qvh3vc94hgd2bkv1pr01qvh3vc94i0",
     'kafka': {

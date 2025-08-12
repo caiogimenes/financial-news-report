@@ -1,9 +1,9 @@
 import logging
+import config
 from time import sleep
 from base import Connector
 from kafka_producer import KafkaProducer
 from finnhub_connector import FinnhubConnector
-from config import symbols
 
 
 class Ingestor:
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     logging.basicConfig()
 
     conn = FinnhubConnector()
-    producer = KafkaProducer(topic='raw_data')
+    producer = KafkaProducer(topic=config.TOPIC)
     while True:
-        Ingestor.run(conn, symbols, producer)
+        Ingestor.run(conn, config.symbols, producer)
         sleep(15)

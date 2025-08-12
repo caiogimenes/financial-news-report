@@ -11,5 +11,5 @@ class Connector(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def fetch_company_news(self, symbol, _from, to):
+    def fetch_company_news(self, symbol, to):
         pass

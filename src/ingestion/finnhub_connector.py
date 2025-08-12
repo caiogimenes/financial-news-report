@@ -22,6 +22,7 @@ class FinnhubConnector(Connector):
         if "FINNHUB_API_KEY" not in config:
             raise KeyError("FINNHUB_API_KEY is missing in the config file. Add it to proceed.")
         os.environ["FINNHUB_API_KEY"] = config["FINNHUB_API_KEY"]
+        return config["FINNHUB_API_KEY"]
 
     def update_last_fetch(self, symbol, datetime):
         self.last_update[symbol] = datetime
