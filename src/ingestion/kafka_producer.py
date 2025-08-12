@@ -4,14 +4,7 @@ from config import config
 
 class KafkaProducer:
     def __init__(self, topic):
-        self.producer = Producer({
-            'bootstrap.servers': config['kafka']['KAFKA_BOOTSTRAP_SERVERS'],
-            'security.protocol': config['kafka']['security.protocol'],
-            'sasl.mechanisms': config['kafka']['sasl.mechanisms'],
-            'sasl.username': config['kafka']['sasl.username'],
-            'sasl.password': config['kafka']['sasl.password'],
-            'client.id': config['kafka']['client.id'],
-        })
+        self.producer = Producer(config["kafka"])
         self.topic = 'raw_data' if not topic else topic
 
     def send_data(self, data):
