@@ -1,11 +1,11 @@
 from confluent_kafka import Producer
-from config import config
+import config
 
 
 class KafkaProducer:
     def __init__(self, topic):
-        self.producer = Producer(config["kafka"])
-        self.topic = 'raw_data' if not topic else topic
+        self.producer = Producer(config.config["kafka"])
+        self.topic = config.TOPIC if not topic else topic
 
     def send_data(self, data):
         if not isinstance(data, str):
