@@ -1,13 +1,26 @@
-from finnhub_consumer import FinnhubConsumer
+import logging
+from time import sleep
+from base import Connector
+from kafka_producer import KafkaProducer
+from finnhub_connector import FinnhubConnector
+from config import symbols
 
-def main():
-    # Initialize the FinnhubConsumer with your API key
-    finnhub_consumer = FinnhubConsumer()
-    # Fetch company news for a specific symbol
-    news = finnhub_consumer.fetch_company_news()
 
-    # Print the fetched news
-    print(next(news))
+class Ingestor:
+    @staticmethod
+    def run(conn: Connector, symbols: list, producer: KafkaProducer):
+        for symbol in symbols:
+            for data in conn.fetch_company_news(
+                    symbol=symbol,
+            ):
+                producer.send_data(data) # Register at Kafka Topic
+
 
 if __name__ == "__main__":
-    main()
+    logging.basicConfig()
+
+    conn = FinnhubConnector()
+    producer = KafkaProducer(topic='raw_data')
+    while True:
+        Ingestor.run(conn, symbols, producer)
+        sleep(15)
