@@ -2,7 +2,7 @@ TOPIC = "raw_data"
 config = {
     "FINNHUB_API_KEY": "d2bkv1pr01qvh3vc94hgd2bkv1pr01qvh3vc94i0",
     'kafka': {
-        'KAFKA_BOOTSTRAP_SERVERS': 'pkc-p11xm.us-east-1.aws.confluent.cloud:9092',
+        'bootstrap.servers': 'pkc-p11xm.us-east-1.aws.confluent.cloud:9092',
         'security.protocol': 'SASL_SSL',
         'sasl.mechanisms': 'PLAIN',
         'sasl.username': 'F37GT4XKKXJBHEB2',
