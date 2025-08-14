@@ -1,7 +1,7 @@
-from confluent_kafka import Consumer
-import config
 import ast
+import config
 from huggingface_hub import InferenceClient
+from confluent_kafka import Consumer
 
 
 class ProcessFinnhubCompanyNews:
