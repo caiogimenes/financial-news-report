@@ -1,5 +1,6 @@
 SUBSCRIBE_TOPIC = "raw_data"
-
+WRITE_TOPIC = "processed_insights"
+HF_API_KEY = ""
 config = {
     'kafka': {
         'bootstrap.servers': 'pkc-p11xm.us-east-1.aws.confluent.cloud:9092',
