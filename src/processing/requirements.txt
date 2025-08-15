@@ -3,11 +3,6 @@ charset-normalizer==3.4.3
 confluent-kafka==2.11.0
 finnhub-python==2.4.24
 idna==3.10
-py4j==0.10.9.9
-pyspark==4.0.0
-python-dateutil==2.9.0.post0
-pytz==2025.2
+psycopg2-binary==2.9.10
 requests==2.32.4
-six==1.17.0
-tzdata==2025.2
 urllib3==2.5.0
