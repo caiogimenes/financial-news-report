@@ -1,78 +1,31 @@
-import ast
-import config
-from huggingface_hub import InferenceClient
+import os
 from confluent_kafka import Consumer
-
-
-class ProcessFinnhubCompanyNews:
-    def __init__(self, value):
-        self.value = ast.literal_eval(value)
-        self.sentiment_client = InferenceClient(
-            provider="auto",
-            api_key=config.HF_API_KEY,
-        )
-        self.ner_client = None
-
-    def _remove_unwanted(self):
-        to_remove = [
-            "id",
-            "image",
-            "source",
-            "url",
-            "category"
-        ]
-        for key in to_remove:
-            del self.value[key]
-
-    def _merge_headline_summary(self):
-        headline = self.value.get("headline")
-        summary = self.value.get("summary")
-        merged = headline + " " + summary
-        self.value["fulltext"] = merged
-
-        del self.value["headline"]
-        del self.value["summary"]
-
-    def preprocess(self):
-        self._remove_unwanted()
-        self._merge_headline_summary()
-
-    def get_sentiment_analysis(self):
-        result = self.sentiment_client.text_classification(
-            self.value.get("fulltext"),
-            model="tabularisai/multilingual-sentiment-analysis",
-        )
-        result.sort(key=lambda x: x.score, reverse=True)
-        self.value["sentiment"] = result[0].label
-        self.value["sentiment_score"] = result[0].score
-
-    def get_ner(self) -> dict:
-        return self.value
-
-    def run_pipeline(self) -> dict:
-        self.preprocess()
-        self.get_sentiment_analysis()
-        self.get_ner()
-
-        return self.value
-
+from finnhub_processor import ProcessFinnhubCompanyNews
 
 def consume():
-    consumer = Consumer(config.config["kafka"])
-    consumer.subscribe([config.SUBSCRIBE_TOPIC])
+    consumer = Consumer({
+            "bootstrap.servers": os.environ.get("BOOTSTRAP_SERVERS"),
+            "security.protocol": os.environ.get("SECURITY_PROTOCOL"),
+            "sasl.mechanisms": os.environ.get("SASL_MECHANISM"),
+            "sasl.username": os.environ.get("SASL_USERNAME"),
+            "sasl.password": os.environ.get("SASL_PASSWORD"),
+            "client.id": os.environ.get("CLIENT_ID"),
+            "group.id": os.environ.get("GROUP_ID")
+        })
+    consumer.subscribe([os.environ.get("SUBSCRIBE_TOPIC")])
     try:
         while True:
             msg = consumer.poll(1)
             if msg and not msg.error():
                 value = msg.value().decode()
-                processor = ProcessFinnhubCompanyNews(value)
-                new_value = processor.run_pipeline()
+                processor = ProcessFinnhubCompanyNews()
+                new_value = processor.transform(value)
                 print(new_value)
+
     except KeyboardInterrupt:
         pass
     finally:
         consumer.close()
-
 
 if __name__ == "__main__":
     consume()

@@ -1,0 +1,29 @@
+services:
+  ingestion-layer:
+    build: src/ingestion
+    env_file: backend.env
+
+  processing-layer:
+    build: src/processing
+    env_file: backend.env
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    models:
+      - llama
+
+  db:
+    image: postgres:14-alpine
+    ports:
+      - "3306:3306"
+    env_file: backend.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+models:
+  llama:
+    model: ai/llama3.2
+
+volumes:
+  postgres_data:
