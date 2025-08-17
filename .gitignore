@@ -2,4 +2,4 @@ __pycache__/
 .venv/
 .idea/
 /src/ingestion/config.py
-/src/processing/config.py
+backend.env
