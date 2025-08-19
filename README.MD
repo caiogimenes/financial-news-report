@@ -1,7 +1,3 @@
-Of course. Here is a version of the `README.md` in English, with a greater focus on the technical architecture of the project.
-
------
-
 # Financial News Report
 
 This project implements a data pipeline for the real-time ingestion and processing of financial news. The solution is built on a microservices architecture, containerized with Docker, and leverages Python, Kafka, and PostgreSQL to create a decoupled and scalable data flow.
