@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS insights(
+    id SERIAL PRIMARY KEY,
+    datetime VARCHAR(100) NOT NULL,
+    company VARCHAR(100) NOT NULL,
+    url VARCHAR(100) NOT NULL,
+    sentiment VARCHAR(100) NOT NULL,
+    score FLOAT NOT NULL,
+    ner VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
