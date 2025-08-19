@@ -1,4 +1,14 @@
 services:
+  db:
+    image: postgres:14-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file: backend.env
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+
   ingestion-layer:
     build: src/ingestion
     env_file: backend.env
@@ -6,20 +16,12 @@ services:
   processing-layer:
     build: src/processing
     env_file: backend.env
-    ports:
-      - "80:80"
     depends_on:
-      - db
+      db:
+        condition: service_started
+        restart: true
     models:
       - llama
-
-  db:
-    image: postgres:14-alpine
-    ports:
-      - "3306:3306"
-    env_file: backend.env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
 
 models:
   llama:
