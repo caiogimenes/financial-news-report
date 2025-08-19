@@ -1,5 +1,7 @@
 import ast
 from llama_local_model import LlamaLocalModel
+from insight import Insight
+
 
 class ProcessFinnhubCompanyNews:
     def __init__(self):
@@ -42,17 +44,26 @@ class ProcessFinnhubCompanyNews:
     def get_sentiment_analysis(self, data):
         result = self.model.call(data.get("fulltext"))
         data["sentiment"] = result["label"].strip()
-        data["sentiment_score"] = result["score"]
+        data["score"] = result["score"]
 
         return data
 
     def get_ner(self, data) -> dict:
+        data["ner"] = ""
         return data
 
-    def transform(self, data) -> dict:
+    def transform(self, data) -> Insight:
         data = self._read_data(data)
         data = self.preprocess(data)
         data = self.get_sentiment_analysis(data)
         data = self.get_ner(data)
 
-        return data
+        return Insight(
+            datetime=data["datetime"],
+            company=data["related"],
+            fulltext=data["fulltext"],
+            url=data["url"],
+            sentiment=data["sentiment"],
+            score=data["score"],
+            ner=data["ner"],
+        )
